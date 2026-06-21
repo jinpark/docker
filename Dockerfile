@@ -48,7 +48,7 @@ COPY --from=builder --chown=inspircd:inspircd /inspircd/ /inspircd/
 
 USER inspircd
 
-EXPOSE 6667 6697 7000 7001
+EXPOSE 6667 6697 7000 7001 7005
 
 WORKDIR /
 ENTRYPOINT ["/entrypoint.sh"]
