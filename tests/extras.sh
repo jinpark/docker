@@ -30,7 +30,7 @@ DOCKERCONTAINER=$(docker run -d -p "127.0.0.1:${CLIENT_PORT}:6667" -p "127.0.0.1
 sleep 5
 
 # Copy the custom module to the local test environemt
-docker cp "${DOCKERCONTAINER}:/inspircd/modules/$TESTMODULE.so" "/tmp/test-extras/"
+# docker cp "${DOCKERCONTAINER}:/inspircd/modules/$TESTMODULE.so" "/tmp/test-extras/"
 
 # [ -s "/tmp/test-extras/$TESTMODULE.so"  ] || { echo >&2 "File empty, test failed!"; exit 1; }
 
