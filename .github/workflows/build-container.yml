@@ -3,22 +3,20 @@ on:
   pull_request:
   push:
   schedule:
-    - cron: '0 0 * * 1'
+    - cron: "0 0 * * 1"
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-      DOCKER_REPO: inspircd/inspircd-docker
-      GITHUB_BRANCH: master
-      GITHUB_REPO: inspircd/docker
+      DOCKER_REPO: jinpark/inspircd-docker
+      GITHUB_BRANCH: v3-fix
+      GITHUB_REPO: jinpark/docker
       INSP_VERSION: v3.18.0
     steps:
-      -
-        uses: actions/checkout@v4
-      -
-        name: Pipeline variables
+      - uses: actions/checkout@v4
+      - name: Pipeline variables
         id: pipeline_vars
         run: |
           EXPECTED="$GITHUB_REPO $GITHUB_BRANCH"
@@ -37,8 +35,7 @@ jobs:
             echo "push=false" >> $GITHUB_OUTPUT
             echo "platforms=linux/amd64" >> $GITHUB_OUTPUT
           fi
-      -
-        name: Build and test amd64 image
+      - name: Build and test amd64 image
         run: |
           IP=$(ip addr s \
             | grep global \
@@ -52,8 +49,7 @@ jobs:
           echo "* * * Image built, running tests... * * *"
           ./run_tests.sh
           echo "* * * Tests OK! * * *"
-      -
-        name: Docker meta
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -62,21 +58,17 @@ jobs:
             type=semver,pattern={{version}},value=${{ env.INSP_VERSION }}
             type=semver,pattern={{major}}.{{minor}},value=${{ env.INSP_VERSION }}
             type=semver,pattern={{major}},value=${{ env.INSP_VERSION }}
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Log in to Docker Hub
+      - name: Log in to Docker Hub
         if: github.repository == env.GITHUB_REPO && github.ref_name == env.GITHUB_BRANCH
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -84,8 +76,7 @@ jobs:
           platforms: ${{ steps.pipeline_vars.outputs.platforms }}
           push: ${{ steps.pipeline_vars.outputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
-      -
-        name: Update description on Docker Hub
+      - name: Update description on Docker Hub
         if: github.repository == env.GITHUB_REPO && github.ref_name == env.GITHUB_BRANCH
         uses: peter-evans/dockerhub-description@v4
         with:

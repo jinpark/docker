@@ -67,7 +67,7 @@ if [ "${SENDPASS}" != "" ] && [ "${RECVPASS}" != "" ] && [ "${NAME}" != "" ] && 
     # Set default port
     if [ "$PORT" = "" ] && [ "$TLS_ON" = "yes" ]; then
         PORT=7001
-    else
+    elif [ "$PORT" = "" ]; then
         PORT=7000
     fi
 
