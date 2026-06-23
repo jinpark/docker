@@ -17,10 +17,12 @@ TESTDIR=/tmp/test-customBuild/
 mkdir -p "$TESTDIR"
 
 cp -r . "$TESTDIR"
+wget -O "$TESTDIR/modules/m_geocmd.cpp"  "https://raw.githubusercontent.com/inspircd/inspircd-contrib/master/3/m_geocmd.cpp"
 
 wget -O "$TESTDIR/modules/m_timedstaticquit.cpp"  "https://raw.githubusercontent.com/inspircd/inspircd-contrib/master/3/m_timedstaticquit.cpp"
 
 [ ! -e "$TESTDIR/modules/m_timedstaticquit.cpp" ] && sleep 10
+[ ! -e "$TESTDIR/modules/m_geocmd.cpp" ] && sleep 10
 
 docker build --build-arg VERSION="${INSP_VERSION}" /tmp/test-customBuild/
 
