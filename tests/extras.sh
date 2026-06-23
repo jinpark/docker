@@ -13,7 +13,8 @@ set -e
 . "$(dirname "$0")/.portconfig.sh"
 
 # TESTMODULE="m_svsoper"
-TESTMODULE="m_geocmd"
+# TESTMODULE="m_geocmd"
+TESTMODULE=""
 
 # Create directory for testing
 mkdir -p /tmp/test-extras/
